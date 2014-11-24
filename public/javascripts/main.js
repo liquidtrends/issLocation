@@ -18,6 +18,7 @@ function initialize() {
   var marker = new google.maps.Marker({
       position: latLon,
       map: map,
+      icon: 'images/iss.png'
   });
 
 //setInterval( function() { console.log(lat,lon); }, 5000 );
