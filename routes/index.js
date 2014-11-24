@@ -18,14 +18,17 @@ var T = new Twit({
    access_token_secret: process.env.ACCESS_TOKEN_SECRET
 });
 
-T.post('statuses/update', { status: 'hello world!' }, function(err, data, response) {
-  console.log(data)
-})
-
 var stream = T.stream('statuses/filter', { track: '#wheresISS' })
 
 stream.on('tweet', function (tweet) {
-  console.log(tweet);
+  var statusUpdate = 'Hey ' + '@' + tweet.user.screen_name + ' the #ISS is currently above:';
+   T.post('statuses/update', { status: statusUpdate }, function(err, reply) {
+    if (err) {
+        console.dir(err);
+    } else {
+        console.dir(reply);
+    }
+   });
 });
 
 var request = require('request');
