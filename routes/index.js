@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var d3 = require('d3');
 
 
 /* GET home page. */
@@ -20,8 +21,15 @@ var T = new Twit({
 
 var stream = T.stream('statuses/filter', { track: '#wheresISS' })
 
+var request = require('request');
+request('http://api.open-notify.org/iss-now.json?callback=?', function (error, response, data) {
+  if (!error && response.statusCode == 200) {
+    console.log(data)
+  }
+})
+
 stream.on('tweet', function (tweet) {
-  var statusUpdate = 'Hey ' + '@' + tweet.user.screen_name + ' the #ISS is currently above:';
+  var statusUpdate = 'Hey ' + '@' + tweet.user.screen_name + ' check out http://bit.ly/15gj3x9';
    T.post('statuses/update', { status: statusUpdate }, function(err, reply) {
     if (err) {
         console.dir(err);
@@ -30,11 +38,4 @@ stream.on('tweet', function (tweet) {
     }
    });
 });
-
-var request = require('request');
-request('http://api.open-notify.org/iss-now.json?callback=?', function (error, response, data) {
-  if (!error && response.statusCode == 200) {
-    console.log(data)
-  }
-})
 
